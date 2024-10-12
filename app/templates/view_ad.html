@@ -1,0 +1,153 @@
+{% extends 'base.html' %} {% block head %}<link
+  rel="stylesheet"
+  href="{{url_for('static',filename='css/view_ad.css')}}"
+/>{% endblock %}{% block body %}
+<div class="container mt-5">
+  {{ad.Ad_type}}/{{ad.subcategory}}
+  <h2>{{ ad.subject }}</h2>
+  <div class="row">
+    <div class="col-6">
+      <p><strong>email:</strong> {{ ad.contact_email }}</p>
+    </div>
+    <div class="col-6">
+      {% if ad.contact_phone %}
+      <p><strong>phone:</strong> {{ ad.contact_phone }}</p>
+      {% endif %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6">
+      <p><strong>city:</strong> {{ ad.city }}</p>
+    </div>
+    <div class="col-6">
+      <p><strong>state:</strong> {{ ad.state }}</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6">
+      <p><strong>zipcode:</strong> {{ ad.zipcode }}</p>
+    </div>
+    <div class="col-6">
+      {% if ad.address %}
+      <p><strong>address:</strong> {{ ad.address }}</p>
+      {% endif %}
+    </div>
+  </div>
+  <div class="mb-3">
+    <p>{{ad.body.replace('\n', '<br />') | safe}}</p>
+  </div>
+  <div class="row">
+    {% if ad.bedroom %}
+    <div class="col-6">
+      <p><strong>bedroom:</strong> {{ ad.bedroom }}</p>
+    </div>
+    {% endif %}{% if ad.bathroom %}
+    <div class="col-6">
+      <p><strong>bathroom:</strong> {{ ad.bathroom }}</p>
+    </div>
+    {% endif %}
+  </div>
+  {% if ad.size %}
+  <div class="mb-3">
+    <p><strong>size:</strong> {{ ad.size }} ft&sup2;</p>
+  </div>
+  {% endif %}{% if ad.rent %}
+  <div class="mb-3">
+    <p>
+      <strong>rent $:</strong> {{ ad.rent }} {% if ad.rent_period %} per
+      {{ad.rent_period}}{% endif %}
+    </p>
+  </div>
+  {% endif %}{% if ad.type %}
+  <div class="mb-3">
+    <p><strong>House type:</strong> {{ ad.type }}</p>
+  </div>
+  {% endif %}
+  <div class="row">
+    {% if ad.price %}
+    <div class="col-6">
+      <p><strong>price $:</strong> {{ ad.price }}</p>
+    </div>
+    {% endif %}{% if ad.mileage %}
+    <div class="col-6">
+      <p><strong>mileage/miles:</strong> {{ ad.mileage }}</p>
+    </div>
+    {% endif %}
+  </div>
+  {% if ad.condition %}
+  <div class="mb-3">
+    <p><strong>condition:</strong> {{ ad.condition }}</p>
+  </div>
+  {% endif %}
+  <div class="row">
+    {% if ad.make %}
+    <div class="col-6">
+      <p><strong>make:</strong> {{ ad.make }}</p>
+    </div>
+    {% endif %}{% if ad.model %}
+    <div class="col-6">
+      <p><strong>model:</strong> {{ ad.model }}</p>
+    </div>
+    {% endif %}
+  </div>
+  {% if ad.brand %}
+  <div class="mb-3">
+    <p><strong>brand:</strong> {{ ad.brand }}</p>
+  </div>
+  {% endif %}
+  <div class="row">
+    {% if ad.industry %}
+    <div class="col-6">
+      <p><strong>industry:</strong> {{ ad.industry }}</p>
+    </div>
+    {% endif %}{% if ad.compensation %}
+    <div class="col-6">
+      <p><strong>compesation $:</strong> {{ ad.compensation }}</p>
+    </div>
+    {% endif %}
+  </div>
+  <div class="row">
+    <div class="col-6">
+      <p><strong>posted on:</strong> {{ ad.post_time }}</p>
+    </div>
+    <div class="col-6">
+      <p><strong>by</strong> {{ user.email }}</p>
+    </div>
+  </div>
+  {% if ad.photos %}
+  <div class="row">
+    <div id="{{ad.id}}" class="carousel slide" data-bs-interval="false">
+      <div class="carousel-inner">
+        {% for photo in ad.photos %}
+        <div class="carousel-item {% if loop.index == 1 %}active{% endif %}">
+          <img
+            src="{{url_for('postAd.uploaded_file',filename=photo.filename)}}"
+            class="card-img-top"
+            alt="{{photo.filename}}"
+          />
+        </div>
+        {% endfor %}
+      </div>
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#{{ad.id}}"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#{{ad.id}}"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

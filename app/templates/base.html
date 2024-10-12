@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{url_for('static',filename='css/main.css')}}"
+    />
+    {% block head %} {% endblock %}
+  </head>
+  <body>
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
+    <div class="alert-container text-center">
+      {% for category, message in messages %}
+      <div
+        class="alert alert-{{ category }} alert-dismissible fade show"
+        role="alert"
+      >
+        {{ message }}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        >
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %} {% endwith %}
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container">
+          <a href="{{url_for('auth.home')}}" class="navbar-brand">
+            <img
+              class="img-responsive"
+              src="{{ url_for('static', filename='/image/logo.png') }}"
+              alt="Logo"
+            />
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              {% if current_user.is_authenticated %}
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Welcome <b>{{ current_user.email }}</b>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a
+                    class="dropdown-item"
+                    href="{{url_for('account_bp.account')}}"
+                    >My Account</a
+                  >
+                  <a class="dropdown-item" href="{{url_for('postAd.choose')}}"
+                    >Post Ads</a
+                  >
+                  <a class="dropdown-item" href="{{ url_for('auth.logout') }}"
+                    >Log Out</a
+                  >
+                </div>
+              </li>
+              {% else %}
+              <div class="d-flex justify-content-between gap-2">
+                <li class="nav-item">
+                  <a
+                    class="btn btn-outline-primary btn-sm"
+                    href="{{ url_for('auth.register') }}"
+                  >
+                    Register
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="btn btn-primary btn-sm"
+                    href="{{ url_for('auth.log_in') }}"
+                  >
+                    Log in
+                  </a>
+                </li>
+              </div>
+            </ul>
+            {% endif %}
+          </div>
+        </div>
+      </nav>
+    </header>
+    {% block body %}{% endblock %}
+    <footer class="navbar fixed-bottom navbar-light bg-light">
+      <div class="container">
+        <a class="nav-link" href="{{url_for('aux.contact')}}">Contact us</a>
+        <a class="nav-link" href="{{url_for('aux.payment')}}">Donate</a>
+        <a class="nav-link" href="{{url_for('aux.about')}}">About us</a>
+      </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    {% block script %}{% endblock %}
+  </body>
+</html>

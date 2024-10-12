@@ -1,0 +1,35 @@
+/*cryptocurrency table style*/
+.cryptocurrency{
+  cursor: pointer;
+}
+.address{
+  cursor: pointer;
+}
+.hidden {
+  display: none; /* Class to hide the <th> */
+}
+/*pay card style*/
+.StripeElement {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  width: 100%;
+}
+
+.StripeElement--focus {
+  box-shadow: 0 4px 12px rgba(0, 120, 215, 0.4);
+  border: 1px solid #007bff;
+}
+
+.StripeElement--invalid {
+  border-color: #dc3545;
+}
+
+.StripeElement--complete {
+  border-color: #28a745;
+}

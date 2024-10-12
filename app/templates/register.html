@@ -1,0 +1,68 @@
+{% extends "base.html" %} {% block head %}
+<title>MyListing16 - sign up</title>
+{% endblock %} {% block body %}
+<h1 align="center">Register</h1>
+<p align="center">Please fill in this form to create an account.</p>
+<div class="container">
+  <form method="POST" class="needs-validation" novalidate action="/register" id="form">
+    <div class="mb-3">
+      <label for="email" class="col-form-label"><b>Email</b></label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        placeholder="Email..."
+        maxlength="50"
+        required
+      />
+      <div class="invalid-feedback">Please enter a valid email address</div>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="col-form-label"><b>Password</b></label>
+      <input
+        type="password"
+        class="form-control"
+        placeholder="Enter Password"
+        name="new_password"
+        id="new_password"
+        required
+        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*?[#!@$%^&*_=+]).{8,16}$"
+      />
+      <div class="invalid-feedback">
+        password is between 8-16 length<br />
+        at least one lower case letter<br />
+        at least one upper case letter<br />
+        at least one number<br />at least one special character from
+        "!@#$%^&*_=+"
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="repeat_password" class="col-form-label"
+        ><b>Repeat Password</b></label
+      >
+      <input
+        type="password"
+        class="form-control"
+        placeholder="Repeat Password"
+        name="repeat_password"
+        id="repeat_password"
+        required        
+      />
+      <div class="invalid-feedback">
+        required
+      </div>
+    </div>
+    <div id="passwordMismatch" class="text-danger mb-3" style="display: none">
+      Passwords do not match!
+    </div>
+    <div class="mb-3">      
+      <button type="submit" class="btn btn-primary">Register</button>
+    </div>
+    <div class="mb-3">
+      <p class="mb-0">Already have an account?</p>
+      <a href="{{url_for('auth.log_in')}}">Log in</a>
+    </div>
+  </form>
+</div>
+{% endblock %}{% block script %}<script src="{{url_for('static',filename='js/validate_register.js')}}"></script>{% endblock %}

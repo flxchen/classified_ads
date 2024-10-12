@@ -1,0 +1,57 @@
+{% extends "base.html" %} {% block head %}
+<title>MyListing16 - Contact us</title>
+{% endblock %} {% block body %}
+<h3 align="center">Contact Form</h3>
+<div class="container">
+  <form method="post" class="needs-validation" novalidate id="form">
+    <div class="mb-3">
+      <label for="email" class="col-form-label"><b>Email</b></label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        placeholder="Enter your email..."
+        maxlength="50"
+        required
+      />
+      <div class="invalid-feedback">Please enter a valid email address</div>
+    </div>
+    <div class="mb-3">
+      <label for="topic" class="col-form-label"><b>Topic</b></label>
+      <input
+        type="text"
+        class="form-control"
+        id="topic"
+        name="topic"
+        placeholder="What is it about..."
+        required
+        pattern=".*\S+.*"
+        maxlength="120"
+      />
+      <div class="invalid-feedback">
+        input at least one non white space character
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="body" class="col-form-label"><b>Body</b></label>
+      <textarea
+        class="form-control"
+        id="body"
+        name="body"
+        placeholder="Write something..."
+        rows="10"
+        minlength="12"
+        maxlength="1500"
+        required
+      ></textarea>
+      <div class="invalid-feedback" id="customvalidation">
+        body requires at least 12 characters
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+{% endblock %}{% block script %}
+<script src="{{url_for('static',filename='js/validate_filter.js')}}"></script>
+{% endblock %}

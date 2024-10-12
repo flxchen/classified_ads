@@ -1,0 +1,197 @@
+/* Fixed sidebar styles */
+.filter-sidebar {
+  position: fixed;
+  top: 4em;
+  left: 0;
+  height: 100%;
+  width: 260px;
+  padding: 20px;
+  padding-bottom: 120px;
+  overflow-y: auto;
+}
+
+/* Page content with margin for fixed sidebar */
+.content {
+  margin-top: 4em;
+  margin-left: 250px;
+  padding: 10px;
+}
+/* Pagination styles */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem; /* Adds spacing between ads and pagination */  
+  position: relative; /* Avoids fixed position to not cover content */
+  z-index: 1;
+  left: 0; /* Aligns it to the left */
+  right: 0;  
+}
+/* Adjust card image size to align ads */
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Row and card gap styles */
+.ad-card {
+  margin-bottom: 30px;
+}
+
+/*ad gallery clipping*/
+.card-title {
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  font-family: Arial, Helvetica, sans-serif;
+  color: blue;
+}
+.card-title:hover {
+  white-space: normal; /* Allow text to wrap on hover */
+  overflow: visible; /* Show the full text */
+}
+.card-text {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.card-text:hover {
+  white-space: normal;
+  overflow: visible;
+}
+.time {
+  font-size: 0.9rem; /* Smaller font size */
+  color: #6c757d; /* Bootstrap secondary color */
+  margin-bottom: 5px; /* Space below time */
+}
+.bedroom,
+.size,
+.brand,
+.make,
+.industry,
+.city {
+  background-color: #f8f9fa; /* Light background */
+  border-radius: 5px; /* Rounded corners */
+  padding: 3px 8px; /* Padding for spacing */
+  margin-right: 5px; /* Spacing between elements */
+  font-size: 0.9rem; /* Font size */
+  color: #495057; /* Darker text color */
+  display: inline-block; /* Make span elements inline-block */
+}
+.bedroom {
+  color: #007bff; /* Blue color for bedroom */
+}
+.size {
+  color: #28a745; /* Green color for size */
+}
+.brand {
+  color: #dc3545; /* Red color for brand */
+}
+.make {
+  color: #17a2b8; /* Teal color for make */
+}
+.industry {
+  color: #6f42c1; /* Purple color for industry */
+}
+.city {
+  color: #a87e00; /* Yellow color for city */
+}
+
+/*style price at ads photo top left corner*/
+.price {
+  position: absolute; /* Position absolutely within the card */
+  top: 10px; /* Adjust as needed */
+  left: 10px; /* Adjust as needed */
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.7
+  ); /* Optional: background for better visibility */
+  padding: 5px; /* Optional: padding for the price */
+  border-radius: 5px; /* Optional: rounded corners */
+  font-weight: bold; /* Optional: make the price bold */
+  color: rgb(47, 128, 1);
+  z-index: 10; /* Ensure it appears above other elements */
+}
+/*style carousel button*/
+.carousel-control-prev,
+.carousel-control-next {
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  width: 50px; /* Adjust width */
+  height: 50px; /* Adjust height */
+  border-radius: 50%; /* Make the buttons circular */
+  top: 50%;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  background-color: rgba(0, 0, 0, 0.7); /* Darker background on hover */
+}
+
+/*style list view ad*/
+.list-subject {
+  font-weight: bold;
+  color: #007bff;
+}
+.list-time {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-left: 10px; /* Spacing between subject and time */
+}
+.list-bedroom,
+.list-size,
+.list-brand,
+.list-make,
+.list-mileage,
+.list-price,
+.list-rent,
+.list-compensation,
+.list-industry,
+.list-city,
+.list-state,
+.list-zipcode {
+  background-color: #f8f9fa; /* Light background */
+  border-radius: 5px; /* Rounded corners */
+  padding: 3px 5px; /* Padding for spacing */
+  margin-left: 5px; /* Spacing between elements */
+  font-size: 0.9rem; /* Font size */
+  color: #495057; /* Darker text color */
+}
+.list-size {
+  color: #a87e00;
+  font-weight: bold;
+}
+.list-industry {
+  color: blueviolet;
+  font-weight: bold;
+}
+.list-make {
+  color: #462e4b;
+  font-weight: bold;
+}
+
+.list-price {
+  color: #28a745; /* Green for price */
+  font-weight: bold; /* Bold for price */
+}
+.list-rent {
+  color: #dc3545; /* Red for rent */
+  font-weight: bold; /* Bold for rent */
+}
+.list-compensation {
+  color: #17a2b8; /* Teal for compensation */
+}
+/* Collapsible filter sidebar for small screens */
+@media (max-width: 768px) {
+  .filter-sidebar {
+    position: static;
+    padding-bottom: 0;
+    width: 100%;
+  }
+  .content {
+    margin-top: 0;
+    margin-left: 0;
+    margin-bottom: 3em;
+  }
+}

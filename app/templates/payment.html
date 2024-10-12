@@ -1,0 +1,153 @@
+{% extends 'base.html' %}{% block head %}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Payment</title>
+<link
+  rel="stylesheet"
+  href="{{url_for('static',filename='css/payment.css')}}"
+/>
+<script src="https://js.stripe.com/v3/"></script>
+{% endblock %} {% block body %}
+<div class="container">
+  <h1>
+    If you like the webiste, please make donations. <br>It keeps the website
+    running!
+  </h1>
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link active"
+        id="card-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#card"
+        type="button"
+        role="tab"
+        aria-selected="true"
+      >
+        Card
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        id="profile-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#cryptocurrency"
+        type="button"
+        role="tab"
+        aria-selected="false"
+      >
+        Cryptocurrency
+      </button>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div
+      class="tab-pane fade show active"
+      id="card"
+      role="tabpanel"
+      aria-labelledby="card-tab"
+    >
+      <form action="{{url_for('aux.payment')}}" method="POST" id="payment-form">
+        <div class="row">
+          <div class="col">
+            <label for="email"><b>Email</b></label>
+            <input
+              class="form-control mb-3"
+              type="email"
+              id="email"
+              name="email"
+              placeholder="enter your email"
+              required
+            />
+
+            <label for="amount"><b>Amount $</b></label>
+            <input
+              class="form-control mb-3"
+              type="number"
+              name="amount"
+              step="0.01"
+              min="1.00"
+              placeholder="enter amount"
+              required
+            />
+
+            <label for="card-element"><b>Credit or debit card</b></label>
+            <div class="mb-3" id="card-element"></div>
+            <div id="card-errors" role="alert"></div>
+            <button class="btn btn-primary" type="submit">
+              Submit Payment
+            </button>
+            <input type="hidden" name="stripeToken" id="stripeToken" />
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="tab-pane fade" id="cryptocurrency" role="tabpanel">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col" style="padding-right: 10px;">cryptocurrency</th>
+            <th scope="col">address</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td class="cryptocurrency">Bitcoin</td>
+            <td class="address hidden" data-value="bc1q508p0z2mpetq2uge8lmjpf632ffwcdt0p4r3j9">bc1q508p0z2mpetq2uge8lmjpf632ffwcdt0p4r3j9</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td class="cryptocurrency">Ethereum</td>
+            <td class="address hidden" data-value="0xAA7fae3d96F3e31cF4674ec920A280015B1b6539">0xAA7fae3d96F3e31cF4674ec920A280015B1b6539</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>click cryptocurrency to show its address</p>
+    </div>
+  </div>
+</div>
+{% endblock %}{% block script %}
+<script src="{{url_for('static',filename='js/payment.js')}}"></script>
+<script>
+  var stripe = Stripe("{{ stripe_public_key }}");
+  var elements = stripe.elements();
+  var card = elements.create("card");
+  card.mount("#card-element");
+
+  card.on("change", function (event) {
+    var displayError = document.getElementById("card-errors");
+    if (event.error) {
+      displayError.textContent = event.error.message;
+    } else {
+      displayError.textContent = "";
+    }
+  });
+
+  var form = document.getElementById("payment-form");
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    var submitButton = document.querySelector(
+      'button[type="submit"].btn.btn-primary'
+    );
+
+    // Disable the button and add spinner
+    submitButton.disabled = true;
+    submitButton.innerHTML = `
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...`;
+
+    stripe.createToken(card).then(function (result) {
+      if (result.error) {
+        var errorElement = document.getElementById("card-errors");
+        errorElement.textContent = result.error.message;
+      } else {
+        var hiddenInput = document.getElementById("stripeToken");
+        hiddenInput.value = result.token.id;
+        form.submit();
+      }
+    });
+  });
+</script>
+{% endblock %}

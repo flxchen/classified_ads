@@ -1,0 +1,418 @@
+{% extends "base.html" %}{% block head %}
+<title>MyListing16 - Post ads</title>
+{% endblock %} {% block body %}
+<div class="container">
+  <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        {%if ad %}<a href="{{url_for('account_bp.account')}}">My account</a>{%
+        else %}<a href="/">Home</a>{% endif %}
+      </li>
+      <li class="breadcrumb-item">
+        {% if ad %}<a href="{{url_for('account_bp.showPost')}}">My Post</a>{%
+        else %}<a href="{{url_for('postAd.choose')}}">{{category}}</a>{% endif
+        %}
+      </li>
+      {% if not ad %}
+      <li class="breadcrumb-item active" aria-current="page">
+        {{subcategory}}
+      </li>
+      {% endif %}
+    </ol>
+  </nav>
+  <form
+    method="POST"
+    class="needs-validation"
+    novalidate
+    id="form"
+    enctype="multipart/form-data"
+    action="{{url_for('postAd.post_ad',category=category,subcategory=subcategory)}}"
+  >
+    <h3 align="center">Post a new topic</h3>
+    <div class="mb-3">
+      <label for="subject"><b>Subject</b></label>
+      <input
+        class="form-control"
+        id="subject"
+        type="text"
+        name="subject"
+        pattern=".*\S+.*"
+        maxlength="50"
+        value="{% if ad and ad.subject %}{{ad.subject}}{% endif %}"
+        required
+      />
+      <div class="invalid-feedback">Enter at least one non space character</div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-6">
+        <label for="city"><b>City</b></label>
+        <input
+          class="form-control"
+          id="city"
+          type="text"
+          name="city"
+          pattern=".*\S+.*"
+          maxlength="50"
+          value="{% if ad and ad.city %}{{ad.city}}{% endif %}"
+          required
+        />
+        <div class="invalid-feedback">Enter a valid city name</div>
+      </div>
+      <div class="col-6">
+        <label for="state"><b>State</b></label>
+        <input
+          class="form-control"
+          id="city"
+          type="text"
+          name="state"
+          pattern=".*\S+.*"
+          maxlength="50"
+          value="{% if ad and ad.state %}{{ad.state}}{% endif %}"
+          required
+        />
+        <div class="invalid-feedback">Enter a valid state name</div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-6">
+        <label for="address"><b>Address</b></label>
+        <input
+          class="form-control"
+          id="address"
+          type="text"
+          name="address"
+          pattern=".*\S+.*"
+          value="{% if ad and ad.address %}{{ad.address}}{% endif %}"
+          maxlength="100"
+        />
+        <div class="invalid-feedback">Enter a valid address</div>
+      </div>
+      <div class="col-6">
+        <label for="zip-code"><b>Zip code</b></label>
+        <input
+          class="form-control"
+          type="text"
+          id="zip-code"
+          name="zip-code"
+          pattern="[0-9]{5}"
+          maxlength="5"
+          value="{% if ad and ad.zipcode %}{{ad.zipcode}}{% endif %}"
+          required
+        />
+        <div class="invalid-feedback">Enter a valid zip code</div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="body"><b>Body</b></label>
+      <textarea
+        id="body"
+        class="form-control"
+        name="body"
+        rows="10"
+        cols="50"
+        minlength="12"
+        maxlength="1500"
+        required
+      >
+{% if ad and ad.body %}{{ad.body}}{% endif %}</textarea
+      >
+      <div class="invalid-feedback">body requires at least 12 characters</div>
+    </div>
+    <div class="form-group mb-3">
+      <label for="formFileMultiple" class="form-label"
+        ><b>Upload photo: max 6 allowed</b></label
+      >
+      <input
+        class="form-control"
+        type="file"
+        id="formFileMultiple"
+        name="photo"
+        accept=".jpg,.jpeg,.png"
+        multiple="multiple"
+      />
+      <div class="invalid-feedback">file support:jpg,jpeg,png</div>
+      <output
+        class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"
+        id="result"
+      >
+      </output>
+    </div>
+
+    {% if category == 'Housing' %}
+    <div class="row mb-3">
+      <div class="col-6">
+        <label for="bedroom"><b>Bedroom number</b></label>
+        <input
+          id="bedroom"
+          class="form-control"
+          name="bedroom"
+          type="number"
+          step="1"
+          max="10000"
+          min="1"
+          value="{% if ad and ad.bedroom %}{{ad.bedroom}}{% endif %}"
+        />
+        <div class="invalid-feedback">
+          cannot be negative,<br />
+          between 1 and 10,000,<br />
+          must be an integer
+        </div>
+      </div>
+      <div class="col-6">
+        <label for="bathroom"><b>Bathroom number</b></label>
+        <input
+          id="bathroom"
+          class="form-control"
+          name="bathroom"
+          type="number"
+          step="1"
+          max="10000"
+          min="1"
+          value="{% if ad and ad.bathroom %}{{ad.bathroom}}{% endif %}"
+        />
+        <div class="invalid-feedback">
+          cannot be negative,<br />
+          between 1 and 10,000,<br />
+          must be an integer
+        </div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="size"><b>size/ft&sup2;</b></label>
+      <input
+        id="size"
+        class="form-control"
+        name="size"
+        type="number"
+        step="0.01"
+        max="2000000000"
+        min="0.01"
+        value="{% if ad and ad.size %}{{ad.size}}{% endif %}"
+      />
+      <div class="invalid-feedback">
+        cannot be negative,<br />
+        up to two digits,<br />
+        betweeb 0.01 and 2,000,000,000
+      </div>
+    </div>
+    <label class="form-check-label mb-3" for="inlineRadio1"
+      ><b>Housing Type</b></label
+    >
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="Options"
+        id="inlineRadio1"
+        value="apartment"
+      />
+      <label class="form-check-label" for="inlineRadio1">apartment</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="Options"
+      id="inlineRadio2" value="house" {% if ad and ad.type == 'house'
+      %}checked{% endif %} />
+      <label class="form-check-label" for="inlineRadio2">house</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="Options"
+      id="inlineRadio3" value="condo" {% if ad and ad.type == 'condo'
+      %}checked{% endif %} />
+      <label class="form-check-label" for="inlineRadio3">condo</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="Options"
+      id="inlineRadio4" value="townhouse" {% if ad and ad.type == 'townhouse'
+      %}checked{% endif %} />
+      <label class="form-check-label" for="inlineRadio4">townhouse</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="Options"
+      id="inlineRadio5" value="other" {% if ad and ad.type == 'other'
+      %}checked{% endif %} />
+      <label class="form-check-label" for="inlineRadio5">other</label>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-6">
+        <label for="rent"><b>Rent $</b></label>
+        <input
+          id="rent"
+          class="form-control"
+          name="rent"
+          type="number"
+          step="0.01"
+          max="2000000000"
+          min="0.01"
+          value="{% if ad and ad.rent %}{{ad.rent}}{% endif %}"
+        />
+        <div class="invalid-feedback">
+          cannot be negative,<br />
+          up to two digits,<br />
+          between 0.01 and 2,000,000,000
+        </div>
+      </div>
+      <div class="col-6">
+        <label for="period"><b>per</b></label>
+        <select name="period" id="period" class="form-control">
+          <option value="">Select an option</option>
+          <option value="day">Day</option>
+          <option value="week">Week</option>
+          <option value="month">Month</option>
+        </select>
+      </div>
+    </div>
+    {% endif %} {% if category == 'For Sale' %}
+    <div class="mb-3">
+      <label for="price"><b>Price $</b></label>
+      <input
+        id="price"
+        class="form-control"
+        type="number"
+        step="0.01"
+        name="price"
+        max="2000000000"
+        min="0.01"
+        value="{% if ad and ad.price%}{{ad.price}}{% endif %}"
+      />
+      <div class="invalid-feedback">
+        cannot be negative,<br />
+        up to two digits,<br />
+        between 0.01 and 2,000,000,000
+      </div>
+    </div>
+    {% if subcategory == 'Auto' %}
+    <div class="mb-3">
+      <label for="mileage"><b>mileage/miles</b></label>
+      <input
+        id="mileage"
+        class="form-control"
+        type="number"
+        step="0.01"
+        name="mileage"
+        max="2000000000"
+        min="0.01"
+        value="{% if ad and ad.mileage%}{{ad.mileage}}{% endif %}"
+      />
+      <div class="invalid-feedback">
+        cannot be negative,<br />
+        up to two digits,<br />
+        between 0.01 and 2,000,000,000
+      </div>
+    </div>
+    {% endif %}
+    <div class="row mb-3">
+      <div class="col-6">
+        <label for="brand"><b>Brand</b></label>
+        <input
+          id="brand"
+          class="form-control"
+          type="text"
+          name="brand"
+          maxlength="50"
+          value="{% if ad and ad.brand %}{{ad.brand}}{% endif %}"
+        />
+      </div>
+      <div class="col-6">
+        <label for="make"><b>Make</b></label>
+        <input
+          id="make"
+          class="form-control"
+          type="text"
+          name="make"
+          maxlength="50"
+          value="{% if ad and ad.make %}{{ad.make}}{% endif %}"
+        />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-6">
+        <label for="model"><b>Model</b></label>
+        <input
+          id="model"
+          class="form-control"
+          type="text"
+          name="model"
+          maxlength="50"
+          value="{% if ad and ad.model %}{{ad.model}}{% endif %}"
+        />
+      </div>
+      <div class="col-6">
+        <label for="condition"><b>Condition</b></label>
+        <select name="condition" id="condition" class="form-control">
+          <option value="">Select an option</option>
+          <option value="new">New</option>
+          <option value="used">Used</option>
+          <option value="deficiency">Deficiency</option>
+        </select>
+      </div>
+    </div>
+    {% endif %} {% if category == 'Jobs' %}
+    <div class="row mb-3">
+      <div class="col-6">
+        <label for="industry"><b>Industry</b></label>
+        <input
+          id="industry"
+          class="form-control"
+          type="text"
+          name="industry"
+          maxlength="20"
+          value="{% if ad and ad.industry %}{{ad.industry}}{% endif %}"
+        />
+      </div>
+      <div class="col-6">
+        <label for="compensation"><b>Compensation $</b></label>
+        <input
+          id="compensation"
+          class="form-control"
+          type="number"
+          step="0.01"
+          name="compensation"
+          max="2000000000"
+          min="0.01"
+          value="{% if ad and ad.compensation %}{{ad.compensation}}{% endif %}"
+        />
+        <div class="invalid-feedback">
+          between 0.01 to 2,000,000,000,<br />cannot be negative,<br />
+          up to two digits
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    <div class="mb-3">
+      <label for="phone"><b>Contact phone</b></label>
+      <input
+        id="phone"
+        class="form-control"
+        type="text"
+        name="phone"
+        pattern="^\d{1,13}$"
+        value="{% if ad and ad.contact_phone %}{{ad.contact_phone}}{% endif %}"
+      />
+      <div class="invalid-feedback">Enter a valid phone number</div>
+    </div>
+    <div class="mb-3">
+      <label for="email"><b>Contact email</b></label>
+      <input
+        id="email"
+        class="form-control"
+        type="email"
+        name="email"
+        maxlength="50"
+        value="{% if ad and ad.contact_email %}{{ad.contact_email}}{% endif %}"
+        required
+      />
+      <div class="invalid-feedback">Enter a valid email</div>
+    </div>
+    <button id="submit-button" class="btn btn-primary" type="submit">submit</button>
+  </form>
+</div>
+{% endblock %} {% block script %}
+<script>
+  // Pass the category variable to JavaScript
+  const category = "{{ category }}";
+  const subcategory = "{{subcategory}}"
+</script>
+<script src="{{url_for('static',filename='js/validate_ads.js')}}"></script>
+<script src="{{url_for('static',filename='js/photo.js')}}"></script>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %} {% block head %}
+<title>MyListing16 - Choose category</title>
+{% endblock %} {% block body %}
+<div class="container" id="container">
+  <h3 align="center">please choose a category</h3>
+  {% for category, subcategories in categories.items() %}
+  <div class="border-top border-bottom mb-3">
+    <b>{{category}}</b>
+    <div class="row">
+      {% for subcategory in subcategories %}
+      <div class="col-4">
+        <a
+          href="{{url_for('postAd.post_ad',category=category, subcategory=subcategory)}}"
+          >{{subcategory}}</a
+        >
+      </div>
+      {% endfor%}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

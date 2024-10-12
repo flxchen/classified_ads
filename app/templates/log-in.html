@@ -1,0 +1,65 @@
+{% extends "base.html" %} {% block head %}
+<title>MyListing16 - log in</title>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
+
+{% endblock %} {% block body %}
+<div class="container">
+  <h2 align="center">Login form</h2>
+  <form method="POST">
+    <div class="row">
+      <div class="col">
+        <label for="email" class="col-form-label"><b>Email</b></label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"
+          placeholder="Email..."
+          maxlength="50"
+          required
+        />
+        <label for="password" class="col-form-label"><b>Password</b></label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          name="password"
+          placeholder="Password..."
+          required
+        />
+      </div>
+      <div class="col-12 mt-3 mb-3">
+        <button type="submit" class="btn btn-primary">Log in</button>
+      </div>
+
+      <div class="vl">
+        <span class="vl-innertext">or</span>
+      </div>
+      <div class="col">
+        <a href="{{url_for('facebook.login')}}" class="form-control bg-info bg-gradient">
+          <i class="fa fa-facebook fa-fw"></i> Login with Facebook
+        </a>
+        <!-- <a href="#" class="form-control bg-success bg-gradient">
+          <i class="fa fa-twitter fa-fw"></i> Login with Twitter
+        </a>
+        <a href="#" class="form-control bg-danger bg-gradient"
+          ><i class="fa fa-google fa-fw"> </i> Login with Google+
+        </a> -->
+      </div>
+    </div>
+  </form>
+
+  <div class="d-flex justify-content-between">
+    <span>Need an account?</span>
+    <span>Need help to log in?</span>
+  </div>
+  <div class="d-flex justify-content-between">
+    <a href="{{url_for('auth.register')}}">Register</a>
+    <a href="{{url_for('auth.reset_password')}}">Forget password</a>
+  </div>
+</div>
+
+{% endblock %}

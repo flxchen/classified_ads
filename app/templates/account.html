@@ -1,0 +1,170 @@
+{% extends "base.html" %} {% block head %}
+<title>MyListing16 - account</title>
+<link
+  rel="stylesheet"
+  href="{{url_for('static',filename='css/account.css')}}"
+/>
+{% endblock %} {% block body %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light custom-navbar">
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" data-section="account-settings" href="#">
+        Settings
+      </a>
+    </li>    
+    <li class="nav-item">
+      <a class="nav-link" data-section="my-posts" href="#"> My Posts </a>
+    </li>
+  </ul>
+</nav>
+<div class="container-fluid">
+  <main class="col-mb-3">
+    <section id="account-settings">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link active"
+            id="email-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#email"
+            type="button"
+            role="tab"
+            aria-controls="email"
+            aria-selected="true"
+          >
+            Email
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="password-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#password"
+            type="button"
+            role="tab"
+            aria-controls="password"
+            aria-selected="false"
+          >
+            Password
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="delete-account-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#delete-account"
+            type="button"
+            role="tab"
+          >
+            Delete Account
+          </button>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div
+          class="tab-pane fade show active"
+          id="email"
+          role="tabpanel"
+          aria-labelledby="email-tab"
+        >
+          <span>{{current_user.email}}</span>
+        </div>
+        <div
+          class="tab-pane fade"
+          id="password"
+          role="tabpanel"
+          aria-labelledby="password-tab"
+        >
+          <form
+            action="/update_password"
+            class="needs-validation"
+            novalidate
+            id="form"
+            method="post"
+          >
+            <div class="mb-3">
+              <label for="current_password"><b>Current Password</b></label>
+              <input
+                type="password"
+                class="form-control"
+                name="current_password"
+                id="current_password"
+                placeholder="Enter current password"
+                required
+              />
+              <div class="invalid-feedback">cannot be empty</div>
+            </div>
+            <div class="mb-3">
+              <label for="new_password"><b>New Password</b></label>
+              <input
+                type="password"
+                class="form-control"
+                name="new_password"
+                id="new_password"
+                placeholder="enter new password"
+                required
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*?[#!@$%^&*_=+]).{8,16}$"
+              />
+              <div class="invalid-feedback">
+                password is between 8-16 length<br />
+                at least one lower case letter<br />
+                at least one upper case letter<br />
+                at least one number<br />at least one special character from
+                "!@#$%^&*_=+"
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="repeat_password"><b>Repeat Password</b></label>
+              <input
+                type="password"
+                class="form-control"
+                name="repeat_password"
+                id="repeat_password"
+                placeholder="repeat password"
+                required
+              />
+              <div class="invalid-feedback">cannot be empty</div>
+            </div>
+            <div
+              id="passwordMismatch"
+              class="text-danger mb-3"
+              style="display: none"
+            >
+              Passwords do not match!
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+          </form>
+        </div>
+        <div
+          class="tab-pane fade"
+          id="delete-account"
+          role="tabpanel"
+          aria-labelledby="delete-account-tab"
+        >
+          <p>
+            Your posted ads will also be deleted.<br />This action cannot be
+            undone.
+          </p>
+          <form method="post" action="/delete_account">
+            <button
+              type="submit"
+              class="btn btn-danger"
+              onclick="return confirm('Are you sure you want to delete your account?')"
+            >
+              Delete Account
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+    <section id="my-posts" class="mt-4">
+      <a class="btn btn-info" href="{{url_for('account_bp.showPost')}}">show Ads</a>       
+    </section>
+  </main>
+</div>
+{% endblock %}{% block script %}
+<script src="{{url_for('static',filename='js/validate_register.js')}}"></script>
+<script src="{{url_for('static',filename='js/account_management.js')}}"></script>
+{% endblock %}

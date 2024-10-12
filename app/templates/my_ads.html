@@ -1,0 +1,122 @@
+{% extends 'base.html' %}{% block body %}
+<div class="container">
+  <div class="filter collapse d-md-block" id="filterCollapse">
+    <form id="filterForm" class="mb-3" method="POST">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="sortSelect">Sort By</label>
+          <select id="sortSelect" class="form-control" name="sort">
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="searchInput">Search</label>
+          <input
+            type="text"
+            class="form-control"
+            id="searchInput"
+            name="search"
+            maxlength="120"
+            placeholder="Enter subject or ads keyword..."
+          />
+        </div>
+      </div>
+      <div class="row mb-0">
+        <div class="col-md-6">
+          <label for="categorySelect">Category</label>
+          <select
+            id="categorySelect"
+            class="form-select"
+            name="category"
+            onchange="updateSubcategories()"
+          >
+            <option value="">Select Category</option>
+            {% for category in categories %}
+            <option value="{{ category }}">{{ category }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="col-md-6">
+          <label for="subcategorySelect">Subcategory</label>
+          <select id="subcategorySelect" class="form-select" name="subcategory">
+            <option value="">Select Subcategory</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary mt-3">Filter</button>
+    </form>
+  </div>
+  <div class="d-flex justify-content-end d-md-none" style="margin-bottom: 1rem">
+    <button
+      class="btn btn-secondary"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#filterCollapse"
+      aria-expanded="false"
+      aria-controls="filterCollapse"
+    >
+      Toggle Filters
+    </button>
+  </div>
+  <div class="list-group">
+    {% for ad in ads %}
+    <div class="list-group-item list-group-item-action">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">{{ ad.subject }}</h5>
+        <small>Posted on: {{ ad.post_time }}</small>
+      </div>
+      <p class="mb-1">Category: {{ ad.Ad_type }}</p>
+      <p class="mb-1">Subcategory: {{ ad.subcategory }}</p>
+      <div class="d-flex justify-content-start gap-2">
+        <a
+          href="{{url_for('account_bp.editPost',ad_id=ad.id)}}"
+          class="btn btn-warning"
+          >Edit</a
+        >
+        <form
+          action="{{url_for('account_bp.deletePost',ad_id=ad.id)}}"
+          method="POST"
+          onsubmit="return confirmDelete()"
+        >
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %} {% block script %}
+<script>
+  function confirmDelete() {
+    return confirm("Are you sure you want to delete this post?");
+  }
+</script>
+<script>
+  const categories_JSON = {{ categories | tojson }};//convert categories to json
+  function updateSubcategories() {
+      const categorySelect = document.getElementById('categorySelect');
+      const subcategorySelect = document.getElementById('subcategorySelect');
+
+      // Clear existing subcategories
+      subcategorySelect.innerHTML = '<option value="">Select Subcategory</option>';
+
+      const category = categorySelect.value;
+
+      // Define subcategories based on selected category
+      let subcategories = [];
+      if (category in categories_JSON) {
+          subcategories = categories_JSON[category];
+      }
+
+      // Populate subcategory dropdown
+      subcategories.forEach(subcategory => {
+          const option = document.createElement('option');
+          option.value = subcategory;
+          option.textContent = subcategory;
+          subcategorySelect.appendChild(option);
+      });
+  }
+</script>
+{% endblock %}

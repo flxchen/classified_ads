@@ -1,0 +1,20 @@
+/*style for the base template*/
+a {
+  text-decoration: none;
+}
+body {
+  padding-bottom: 60px;
+  margin-top: 5em;
+}
+
+.nav-link {
+  color: rgb(39, 38, 38); /* Default color for links */
+  font-weight: bold; /* Make the text bold */  
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* Light background on hover */
+  color: #08775b; /* Change text color on hover to gold */
+  text-decoration: none; /* Remove underline on hover */
+}

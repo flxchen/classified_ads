@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block head %}
+<title>MyListing16 - Home</title>
+{% endblock %} {% block body %}
+
+<h2 align="center">Welcome to classified ads</h2>
+<h6 align="center">Sign up for free post!</h6>
+
+<div class="container d-flex align-items-start wrap" id="container">
+  {% for category, subcategories in categories.items() %}
+  <div class="col-4 category-section">
+    <h5 class="mb-0">
+      <a href="{{url_for('view.view_category',category=category)}}">{{category}}</a>
+    </h5>
+    <ul class="list-unstyled">
+      {% for subcategory in subcategories %}
+      <li>
+        <a
+          href="{{url_for('view.view_category',category=category, subcategory=subcategory)}}"
+          >{{subcategory}}</a
+        >
+      </li>
+      {% endfor%}
+    </ul>
+  </div>
+  {% endfor%}
+</div>
+
+{% endblock %}

@@ -1,0 +1,588 @@
+{% extends 'base.html' %} {% block head %}<title>
+  {{category}}{% if subcategory %} - {{subcategory}}{% endif %}
+</title>
+<link rel="stylesheet" href="{{url_for('static',filename='css/view.css')}}" />
+{% endblock %} {% block body %}
+<div class="container-fluid">
+  <div class="filter-sidebar collapse d-md-block" id="filterSidebarCollapse">
+    <form method="post" class="needs-validation" novalidate id="form">
+      <div class="mb-3">
+        <label for="view">View</label>
+        <select class="form-control" id="view" name="view">
+          <option value="gallery">Gallery</option>
+          <option value="list">List</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="sort">Sort</label>
+        <select class="form-control" id="sort" name="sort">
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <input
+          type="checkbox"
+          class="form-check-input"
+          id="has_image"
+          name="has_image"
+        />
+        <label class="form-check-label" for="has_image">Has image</label>
+      </div>
+      <div class="mb-3">
+        <label for="city">City</label>
+        <input
+          type="text"
+          class="form-control"
+          id="city"
+          name="city"
+          pattern=".*\S+.*"
+          maxlength="50"
+        />
+        <div class="invalid-feedback">Enter a valid city name</div>
+      </div>
+      <div class="mb-3">
+        <label for="state">State</label>
+        <input
+          type="text"
+          class="form-control"
+          id="state"
+          name="state"
+          pattern=".*\S+.*"
+          maxlength="50"
+        />
+        <div class="invalid-feedback">Enter a valid state name</div>
+      </div>
+      <div class="mb-3">
+        <label for="zipcode">Zip Code</label>
+        <input
+          type="text"
+          class="form-control"
+          id="zipcode"
+          name="zipcode"
+          pattern="[0-9]{5}"
+          maxlength="5"
+        />
+        <div class="invalid-feedback">Enter a valid zip code</div>
+      </div>
+      {% if category == 'For Sale' %}
+      <div class="row mb-3">
+        <label for="price">Price $</label>
+        <div class="col-6">
+          <input
+            type="number"
+            step="0.01"
+            class="form-control"
+            id="min_price"
+            name="min_price"
+            max="2000000000"
+            min="0.01"
+            placeholder="min"
+          />
+          <div class="invalid-feedback">Enter a positive number</div>
+        </div>
+        <div class="col-6">
+          <input
+            type="number"
+            step="0.01"
+            class="form-control"
+            id="max_price"
+            name="max_price"
+            max="2000000000"
+            min="0.01"
+            placeholder="max"
+          />
+          <div class="invalid-feedback">Enter a positive number</div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="mileage">Mileage</label>
+        <div class="col-6">
+          <input
+            type="number"
+            step="0.01"
+            class="form-control"
+            id="min_mileage"
+            name="min_mileage"
+            max="2000000000"
+            min="0.01"
+            placeholder="min"
+          />
+          <div class="invalid-feedback">Enter a positive number</div>
+        </div>
+        <div class="col-6">
+          <input
+            type="number"
+            step="0.01"
+            class="form-control"
+            id="max_mileage"
+            name="max_mileage"
+            max="2000000000"
+            min="0.01"
+            placeholder="max"
+          />
+          <div class="invalid-feedback">Enter a positive number</div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="make">Make</label>
+        <input type="text" class="form-control" id="make" name="make" />
+      </div>
+      <div class="mb-3">
+        <label for="model">Model</label>
+        <input
+          type="text"
+          class="form-control"
+          id="model"
+          name="model"
+          maxlength="20"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="brand">Brand</label>
+        <input
+          type="text"
+          class="form-control"
+          id="brand"
+          name="brand"
+          maxlength="20"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="condition">Condition</label>
+        <select class="form-control" id="condition" name="condition">
+          <option value="">-</option>
+          <option value="new">New</option>
+          <option value="used">Used</option>
+          <option value="deficiency">Deficiency</option>
+        </select>
+      </div>
+      {% endif %} {% if category == 'Housing' %}
+      <div class="row mb-3">
+        <label for="rent">Rent $</label>
+        <div class="col-6">
+          <input
+            type="number"
+            step="0.01"
+            class="form-control"
+            id="min_rent"
+            name="min_rent"
+            max="2000000000"
+            min="0.01"
+            placeholder="min"
+          />
+          <div class="invalid-feedback">Enter a positive number</div>
+        </div>
+        <div class="col-6">
+          <input
+            type="number"
+            step="0.01"
+            class="form-control"
+            id="max_rent"
+            name="max_rent"
+            max="2000000000"
+            min="0.01"
+            placeholder="max"
+          />
+          <div class="invalid-feedback">Enter a positive number</div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="size">Size/ft&sup2;</label>
+        <div class="col-6">
+          <input
+            type="number"
+            step="0.01"
+            class="form-control"
+            id="min_size"
+            name="min_size"
+            max="2000000000"
+            min="0.01"
+            placeholder="min"
+          />
+          <div class="invalid-feedback">Enter a positive number</div>
+        </div>
+        <div class="col-6">
+          <input
+            type="number"
+            step="0.01"
+            class="form-control"
+            id="max_size"
+            name="max_size"
+            max="2000000000"
+            min="0.01"
+            placeholder="max"
+          />
+          <div class="invalid-feedback">Enter a positive number</div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="bedroom">Bedroom</label>
+        <div class="col-6">
+          <input
+            type="number"
+            step="1"
+            class="form-control"
+            id="min_bedroom"
+            name="min_bedroom"
+            max="10000"
+            min="1"
+            placeholder="min"
+          />
+          <div class="invalid-feedback">Enter a positive number</div>
+        </div>
+        <div class="col-6">
+          <input
+            type="number"
+            step="1"
+            class="form-control"
+            id="max_bedroom"
+            name="max_bedroom"
+            max="100000"
+            min="1"
+            placeholder="max"
+          />
+          <div class="invalid-feedback">Enter a positive integer</div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="bathroom">Bathroom</label>
+        <div class="col-6">
+          <input
+            type="number"
+            step="1"
+            class="form-control"
+            id="min_bathroom"
+            name="min_bathroom"
+            max="10000"
+            min="1"
+            placeholder="min"
+          />
+          <div class="invalid-feedback">Enter a positive integer</div>
+        </div>
+        <div class="col-6">
+          <input
+            type="number"
+            step="1"
+            class="form-control"
+            id="max_bathroom"
+            name="max_bathroom"
+            max="100000"
+            min="1"
+            placeholder="max"
+          />
+          <div class="invalid-feedback">Enter a positive number</div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="housing_type">Type</label>
+        <select class="form-control" id="housing_type" name="housing_type">
+          <option value="all">All</option>
+          <option value="apartment">Apartment</option>
+          <option value="house">House</option>
+          <option value="condo">Condo</option>
+          <option value="townhouse">Townhouse</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      {% endif %} {% if category == 'Jobs'%}
+      <div class="mb-3">
+        <label for="industry">Industry</label>
+        <input
+          type="text"
+          class="form-control"
+          id="industry"
+          name="industry"
+          maxlength="20"
+        />
+      </div>
+      <div class="row mb-3">
+        <label for="compensation">Compensation $</label>
+        <div class="col-6">
+          <input
+            type="number"
+            step="0.01"
+            class="form-control"
+            id="min_compensation"
+            name="min_compensation"
+            max="2000000000"
+            min="0.01"
+            placeholder="min"
+          />
+          <div class="invalid-feedback">Enter a positive number</div>
+        </div>
+        <div class="col-6">
+          <input
+            type="number"
+            step="0.01"
+            class="form-control"
+            id="max_compensation"
+            name="max_compensation"
+            max="2000000000"
+            min="0.01"
+            placeholder="max"
+          />
+          <div class="invalid-feedback">Enter a positive number</div>
+        </div>
+      </div>
+      {% endif %}
+      <div class="d-flex justify-content-between">
+        <button type="reset" class="btn btn-outline-info">Reset</button>
+        <button type="submit" class="btn btn-info">Apply</button>
+      </div>
+    </form>
+  </div>
+  <div class="d-flex justify-content-end d-md-none mt-3">
+    <button
+      class="btn btn-secondary"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#filterSidebarCollapse"
+      aria-expanded="false"
+      aria-controls="filterSidebarCollapse"
+    >
+      Toggle Filters
+    </button>
+  </div>
+
+  <div class="content">
+    <form class="mb-3 d-flex" method="post">
+      <input
+        type="text"
+        class="form-control me-2"
+        id="searchInput"
+        name="search"
+        maxlength="120"
+        placeholder="Enter subject or ads keyword..."
+      />
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <span
+      ><b
+        >{{category}}({{categorySize}}){% if subcategory %} -
+        {{subcategory}}({{ads|length}}){% endif %}</b
+      ></span
+    >
+    {% if display_type == 'gallery' %}
+    <div class="row" id="ads-list">
+      {% for ad in ads %}
+      <div class="col-md-4 ad-card">
+        <div class="card">
+          <a href="{{url_for('view.viewAd', subject=ad.subject, id=ad.id)}}">
+            {% if ad.photos %} {% if ad.rent %}
+            <span class="price">{{ad.rent}}$</span>
+            {% elif ad.price %}
+            <span class="price">{{ad.price}}$</span> {% elif ad.compensation %}
+            <span class="price">{{ad.compensation}}$</span>
+            {% endif %}
+            <div id="{{ad.id}}" class="carousel slide" data-bs-interval="false">
+              <div class="carousel-indicators">
+                {% for i in range(ad.photos|length) %}
+                <button
+                  type="button"
+                  data-bs-target="#{{ad.id}}"
+                  data-bs-slide-to="{{i}}"
+                  class="{% if i == 0 %}active{% endif %}"
+                  aria-current="{% if i == 0 %}true{% endif %}"
+                  aria-label="Slide {{i+1}}"
+                ></button>
+                {% endfor %}
+              </div>
+              <div class="carousel-inner">
+                {% for photo in ad.photos %}
+                <div
+                  class="carousel-item {% if loop.index == 1 %}active{% endif %}"
+                >
+                  <img
+                    src="{{url_for('postAd.uploaded_file',filename=photo.filename)}}"
+                    class="card-img-top"
+                    alt="{{photo.filename}}"
+                  />
+                </div>
+                {% endfor %}
+              </div>
+              <button
+                class="carousel-control-prev"
+                type="button"
+                data-bs-target="#{{ad.id}}"
+                data-bs-slide="prev"
+              >
+                <span
+                  class="carousel-control-prev-icon"
+                  aria-hidden="true"
+                ></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button
+                class="carousel-control-next"
+                type="button"
+                data-bs-target="#{{ad.id}}"
+                data-bs-slide="next"
+              >
+                <span
+                  class="carousel-control-next-icon"
+                  aria-hidden="true"
+                ></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+            {% else %}
+            <a href="{{url_for('view.viewAd', subject=ad.subject, id=ad.id)}}">
+              <img
+                src="{{url_for('static',filename='image/no_image.png')}}"
+                class="card-img-top"
+                alt="no_image.png"
+            /></a>
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ad.subject}}</h5>
+              <p class="card-text">
+                <span class="time">{{ad.post_time}}</span>
+                {% if ad.bedroom %}
+                <span class="bedroom">{{ad.bedroom}}bedroom</span>
+                {% endif %} {% if ad.size %}
+                <span class="size">{{ad.size}}ft&sup2;</span>
+                {% endif %}{% if ad.brand %}
+                <span class="brand">{{ad.brand}}</span>
+                {% endif %}{% if ad.make %}
+                <span class="make">{{ad.make}}</span>
+                {% endif %}{% if ad.mileage %}
+                <span class="mileage"><b>{{ad.mileage}} miles</b></span>
+                {% endif %} {% if ad.industry %}
+                <span class="industry">{{ad.industry}}</span>
+                {% endif %}
+                <span class="city">{{ad.city}}</span>
+              </p>
+            </div>
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% elif display_type == 'list'%}
+    <div class="list-group">
+      {% for ad in ads %}
+      <div class="list-group-item list-group-item-action">
+        <p class="mb-0">
+          <a href="{{url_for('view.viewAd', subject=ad.subject, id=ad.id)}}"
+            ><span class="list-subject">{{ad.subject}}</span></a
+          >{% if ad.bedroom %}<span class="list-bedroom"
+            >{{ad.bedroom}}bedroom</span
+          >{% endif %} {% if ad.size %}
+          <span class="list-size">{{ad.size}}ft&sup2;</span>
+          {% endif %}{% if ad.brand %}
+          <span class="list-brand">{{ad.brand}}</span>
+          {% endif %}{% if ad.make %}
+          <span class="list-make">{{ad.make}}</span>
+          {% endif %}{% if ad.mileage %}
+          <span class="list-mileage">{{ad.mileage}} miles</span>
+          {% endif %}{% if ad.industry %}
+          <span class="list-industry">{{ad.industry}}</span>
+          {% endif %}{% if ad.price %}
+          <span class="list-price">{{ad.price}}$</span>
+          {% endif %}{% if ad.rent %}
+          <span class="list-rent">{{ad.rent}}$</span>
+          {% endif %}{% if ad.compensation %}
+          <span class="list-compensation">{{ad.compensation}}$</span>
+          {% endif %}
+          <span class="list-city">{{ad.city}}</span>
+          <span class="list-state">{{ad.state}}</span>
+          <span class="list-zipcode">{{ad.zipcode}}</span>
+          <span class="list-time">{{ad.post_time}}</span>
+        </p>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="list-group">
+      {% for ad in ads %}
+      <div class="list-group-item list-group-item-action">
+        <p class="mb-0">
+          <a href="{{url_for('view.viewAd', subject=ad.subject, id=ad.id)}}"
+            ><span class="list-subject">{{ad.subject}}</span></a
+          >{% if ad.bedroom %}<span class="list-bedroom"
+            >{{ad.bedroom}}bedroom</span
+          >{% endif %} {% if ad.size %}
+          <span class="list-size">{{ad.size}}ft&sup2;</span>
+          {% endif %}{% if ad.brand %}
+          <span class="list-brand">{{ad.brand}}</span>
+          {% endif %}{% if ad.make %}
+          <span class="list-make">{{ad.make}}</span>
+          {% endif %}{% if ad.mileage %}
+          <span class="list-mileage">{{ad.mileage}} miles</span>
+          {% endif %}{% if ad.industry %}
+          <span class="list-industry">{{ad.industry}}</span>
+          {% endif %}{% if ad.price %}
+          <span class="list-price">{{ad.price}}$</span>
+          {% endif %}{% if ad.rent %}
+          <span class="list-rent">{{ad.rent}}$</span>
+          {% endif %}{% if ad.compensation %}
+          <span class="list-compensation">{{ad.compensation}}$</span>
+          {% endif %}
+          <span class="list-city">{{ad.city}}</span>
+          <span class="list-state">{{ad.state}}</span>
+          <span class="list-zipcode">{{ad.zipcode}}</span>
+          <span class="list-time">{{ad.post_time}}</span>
+        </p>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <nav aria-label="Page navigation">
+        <ul class="pagination">
+          <li class="page-item {% if page == 1 %}disabled{% endif %}">
+            <a
+              class="page-link"
+              href="{{ url_for('view.view_category', page=1, category=category, subcategory=subcategory) }}"
+              aria-label="First"
+            >
+              <span aria-hidden="true">&laquo;&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item {% if page == 1 %}disabled{% endif %}">
+            <a
+              class="page-link"
+              href="{{ url_for('view.view_category', page=page-1, category=category, subcategory=subcategory) }}"
+              aria-label="Previous"
+            >
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+
+          <li class="page-item active">
+            <a
+              class="page-link"
+              href="{{ url_for('view.view_category', page=page, category=category, subcategory=subcategory) }}"
+              >{{page}} - {{total_page}}</a
+            >
+          </li>
+
+          <li class="page-item {% if page == total_page %}disabled{% endif %}">
+            <a
+              class="page-link"
+              href="{{ url_for('view.view_category', page=page+1, category=category, subcategory=subcategory) }}"
+              aria-label="Next"
+            >
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+          <li class="page-item {% if page == total_page %}disabled{% endif %}">
+            <a
+              class="page-link"
+              href="{{ url_for('view.view_category', page=total_pages, category=category, subcategory=subcategory) }}"
+              aria-label="Last"
+            >
+              <span aria-hidden="true">&raquo;&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block script %}
+<script src="{{url_for('static',filename='js/validate_filter.js')}}"></script>
+{% endblock %}
