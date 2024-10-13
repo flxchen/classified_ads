@@ -1,22 +1,19 @@
 //validates form
 var form = document.getElementById("form");
 var textarea = document.getElementById("body");
-var submitButton = document.querySelector(
-  'button[type="submit"].btn.btn-primary'
-);
+var submitButton = document.getElementById("submit-button");
 
 form.addEventListener(
   "submit",
   function (event) {
-    event.preventDefault();    
+    event.preventDefault();
     if (!form.checkValidity()) {
       form.classList.add("was-validated");
-    } 
-    else {
+    } else {
       if (confirm("Are you sure you want to post the ad?")) {
         process(submitButton);
         sendPhotosToServer();
-        form.submit();              
+        form.submit();
       }
     }
   },
@@ -37,7 +34,7 @@ function isValidInput(value) {
 }
 
 // Disable the button and add spinner
-function process(submitButton){  
+function process(submitButton) {
   submitButton.disabled = true;
   submitButton.innerHTML = `
   <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...`;
@@ -54,7 +51,7 @@ imageInput.addEventListener("change", handleImageUpload);
 function handleImageUpload(e) {
   const files = Array.from(e.target.files);
   const number_of_images = files.length;
-  const remainingSlots = max_file_number - total;  
+  const remainingSlots = max_file_number - total;
 
   for (let i = 0; i < Math.min(number_of_images, remainingSlots); i++) {
     if (!files[i].type.startsWith("image/")) {
@@ -96,7 +93,8 @@ function handleImageUpload(e) {
     });
     picReader.readAsDataURL(files[i]);
   }
-  updateImageInput();console.log(uploadedPhotos);
+  updateImageInput();
+  console.log(uploadedPhotos);
 }
 //check max photo limit
 function updateImageInput() {
@@ -111,23 +109,23 @@ function updateImageInput() {
 // Function to send the uploaded photos to the Flask endpoint
 async function sendPhotosToServer() {
   const formData = new FormData();
-  
+
   // Append each photo from uploadedPhotos array to the form data
   uploadedPhotos.forEach((photo, index) => {
     formData.append(`photo_${index}`, photo);
   });
-  console.log('category',category,'subcategory',subcategory,formData);
+  console.log("category", category, "subcategory", subcategory, formData);
   try {
-    const response = await fetch(`http://192.168.50.151:5000/post-ads/${category}/${subcategory}`, {
-      method: 'POST',
-      body: formData
+    const response = await fetch("/", {
+      method: "POST",
+      body: formData,
     });
 
     if (response.ok) {
       const result = await response.json();
-      console.log("Photos uploaded successfully!",result);
+      console.log("Photos uploaded successfully!", result);
     } else {
-      console.log("Failed to upload photos.",response.status);
+      console.log("Failed to upload photos.", response.status);
     }
   } catch (error) {
     console.error("Error during photo upload:", error);

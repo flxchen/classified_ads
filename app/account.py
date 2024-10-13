@@ -94,8 +94,7 @@ def editPost(ad_id):
     subcategory = ad.subcategory
     from .postAd import post_ad
     if request.method == 'POST':
-        post_ad(category,subcategory)
-        return redirect(url_for('account_bp.showPost'))
+        post_ad(category,subcategory)        
     return voidCache(render_template('post_ad.html',ad=ad, category=category, subcategory=subcategory))
 
 def filterMyAd(ads,sort,search,category,subcategory):

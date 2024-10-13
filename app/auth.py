@@ -49,8 +49,12 @@ def log_in():
     return voidCache(render_template("log-in.html"))
 
 from . import category
-@auth.route("/")
-def home():    
+@auth.route("/",methods=['GET','POST'])
+def home():
+    if request.method == 'POST':
+        photos = request.files.getlist('photo')
+        for photo in photos:
+            print(photo)
     return voidCache(render_template("index.html",categories=category.categories,current_user=current_user))
 
 #prevent browser caching login required page

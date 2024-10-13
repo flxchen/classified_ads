@@ -4,7 +4,6 @@ from flask_login import LoginManager
 from config import Config
 from flask_migrate import Migrate
 from flask_mail import Mail
-from flask_cors import CORS
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -39,7 +38,6 @@ def create_app():
     login_manager.init_app(app)
     @login_manager.user_loader
     def load_user(user_id):
-        return User.query.get(user_id)
-    CORS(app)
+        return User.query.get(user_id)    
     return app
 

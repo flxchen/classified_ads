@@ -24,7 +24,7 @@ def post_ad(category,subcategory):
         address = request.form.get('address')
         zipCode = request.form.get('zip-code')
         body = request.form.get('body')
-        photos = photos_dict_to_list(request.files)        
+        photos = request.files.getlist('photo')
         phone = request.form.get('phone')
         for photo in photos:
             print(photo)
