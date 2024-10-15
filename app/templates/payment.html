@@ -10,7 +10,7 @@
 {% endblock %} {% block body %}
 <div class="container">
   <h1>
-    If you like the webiste, please make donations. <br>It keeps the website
+    If you like the webiste, please make donations. <br />It keeps the website
     running!
   </h1>
   <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -88,7 +88,7 @@
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col" style="padding-right: 10px;">cryptocurrency</th>
+            <th scope="col" style="padding-right: 10px">cryptocurrency</th>
             <th scope="col">address</th>
           </tr>
         </thead>
@@ -96,12 +96,22 @@
           <tr>
             <th scope="row">1</th>
             <td class="cryptocurrency">Bitcoin</td>
-            <td class="address hidden" data-value="bc1q508p0z2mpetq2uge8lmjpf632ffwcdt0p4r3j9">bc1q508p0z2mpetq2uge8lmjpf632ffwcdt0p4r3j9</td>
+            <td
+              class="address hidden"
+              data-value="bc1q508p0z2mpetq2uge8lmjpf632ffwcdt0p4r3j9"
+            >
+              bc1q508p0z2mpetq2uge8lmjpf632ffwcdt0p4r3j9
+            </td>
           </tr>
           <tr>
             <th scope="row">2</th>
             <td class="cryptocurrency">Ethereum</td>
-            <td class="address hidden" data-value="0xAA7fae3d96F3e31cF4674ec920A280015B1b6539">0xAA7fae3d96F3e31cF4674ec920A280015B1b6539</td>
+            <td
+              class="address hidden"
+              data-value="0xAA7fae3d96F3e31cF4674ec920A280015B1b6539"
+            >
+              0xAA7fae3d96F3e31cF4674ec920A280015B1b6539
+            </td>
           </tr>
         </tbody>
       </table>
@@ -133,11 +143,6 @@
       'button[type="submit"].btn.btn-primary'
     );
 
-    // Disable the button and add spinner
-    submitButton.disabled = true;
-    submitButton.innerHTML = `
-    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...`;
-
     stripe.createToken(card).then(function (result) {
       if (result.error) {
         var errorElement = document.getElementById("card-errors");
@@ -145,6 +150,10 @@
       } else {
         var hiddenInput = document.getElementById("stripeToken");
         hiddenInput.value = result.token.id;
+        // Disable the button and add spinner
+        submitButton.disabled = true;
+        submitButton.innerHTML = `
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...`;
         form.submit();
       }
     });

@@ -1,13 +1,18 @@
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 class Config:
-    SECRET_KEY = 'dev'
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:123456@localhost/userDatabase'
-    MAX_CONTENT_LENGTH = 16*1024*1024
-    UPLOAD_FOLDER = 'uploads'
-    MAIL_SERVER = 'smtp.mail.yahoo.com'
-    MAIL_PORT = 587
-    MAIL_USE_TLS = True
-    MAIL_USERNAME = 'kevinchen346@yahoo.com'
-    MAIL_PASSWORD = 'pevcsybtinlyraqn'
-    MAIL_DEFAULT_SENDER = 'kevinchen346@yahoo.com'
-    STRIPE_PUBLIC_KEY = 'pk_test_51Q8DzKDns5yIkVLKH1mlkaAuTUKNloR0y9DNFimSF54V2qHXJT7OpagITpCnZtAfSoFTOtxvXP9tRqWUdsd0R2K000BZ15tR7s'
-    STRIPE_SECRET_KEY = 'sk_test_51Q8DzKDns5yIkVLKlEWX2bkgWqgk12AvLCASVChwGqy9ITwN1nQ3VrgEiejMID6LiTugdeN3j4Brd3TYgHUJfXvl00SQJ0vpz5'
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
+    UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER')
+    MAIL_SERVER = os.environ.get('MAIL_SERVER')
+    MAIL_PORT = os.environ.get('MAIL_PORT')
+    MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS')
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER')
+    STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY')
+    STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')

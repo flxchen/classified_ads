@@ -12,8 +12,7 @@ form.addEventListener(
     } else {
       if (confirm("Are you sure you want to post the ad?")) {
         process(submitButton);
-        sendPhotosToServer();
-        form.submit();
+        sendFormToServer();
       }
     }
   },
@@ -84,7 +83,7 @@ function handleImageUpload(e) {
         const index = uploadedPhotos.indexOf(files[i]);
         if (index > -1) {
           uploadedPhotos.splice(index, 1); // Remove the file from the array
-        }
+        }        
         updateImageInput();
       });
       total++;
@@ -93,8 +92,7 @@ function handleImageUpload(e) {
     });
     picReader.readAsDataURL(files[i]);
   }
-  updateImageInput();
-  console.log(uploadedPhotos);
+  updateImageInput();  
 }
 //check max photo limit
 function updateImageInput() {
@@ -107,23 +105,117 @@ function updateImageInput() {
 }
 
 // Function to send the uploaded photos to the Flask endpoint
-async function sendPhotosToServer() {
+async function sendFormToServer() {
   const formData = new FormData();
-
+  console.log(uploadedPhotos);
   // Append each photo from uploadedPhotos array to the form data
-  uploadedPhotos.forEach((photo, index) => {
-    formData.append(`photo_${index}`, photo);
+  uploadedPhotos.forEach((photo) => {
+    formData.append("uploaded_photo", photo);
   });
-  console.log("category", category, "subcategory", subcategory, formData);
+  const subject = document.getElementById("subject").value;
+  const city = document.getElementById("city").value;
+  const state = document.getElementById("state").value;
+  const address = document.getElementById("address").value;
+  const zipcode = document.getElementById("zip-code").value;
+  const body = document.getElementById("body").value;
+  const email = document.getElementById("email").value;
+  var phone = document.getElementById("phone");
+  if (phone) {
+    phone = phone.value;
+  }
+  var bedroom = document.getElementById("bedroom");
+  if (bedroom) {
+    bedroom = bedroom.value;
+  }
+  var bathroom = document.getElementById("bathroom");
+  if (bathroom) {
+    bathroom = bathroom.value;
+  }
+  var size = document.getElementById("size");
+  if (size) {
+    size = size.value;
+  }
+  var type = document.getElementById("Options");
+  if (type) {
+    type = type.value;
+  }
+  var rent = document.getElementById("rent");
+  if (rent) {
+    rent = rent.value;
+  }
+  var period = document.getElementById("period");
+  if (period) {
+    period = period.value;
+  }
+  var price = document.getElementById("price");
+  if (price) {
+    price = price.value;
+  }
+  var mileage = document.getElementById("mileage");
+  if(mileage == undefined){mileage = ""}
+  if (mileage) {
+    mileage = mileage.value;
+  }
+  var brand = document.getElementById("brand");
+  if (brand) {
+    brand = brand.value;
+  }  
+  var make = document.getElementById("make");
+  if (make) {
+    make = make.value;
+  }
+  var model = document.getElementById("model");
+  if (model) {
+    model = model.value;
+  }
+  var condition = document.getElementById("condition");
+  if (condition) {
+    condition = condition.value;
+  }
+  var industry = document.getElementById("industry");
+  if (industry) {
+    industry = industry.value;
+  }
+  var compensation = document.getElementById("compensation");
+  if (compensation) {
+    compensation = compensation.value;
+  }
+
+  formData.append("subject", subject);
+  formData.append("city", city);
+  formData.append("state", state);
+  formData.append("address", address);
+  formData.append("zip-code", zipcode);
+  formData.append("body", body);
+  formData.append("phone", phone);
+  formData.append("email", email);
+  formData.append("bedroom", bedroom);
+  formData.append("bathroom", bathroom);
+  formData.append("size", size);
+  formData.append("type", type);
+  formData.append("rent", rent);
+  formData.append("period", period);
+  formData.append("price", price);
+  formData.append("mileage", mileage);
+  formData.append("brand", brand);
+  formData.append("make", make);
+  formData.append("model", model);
+  formData.append("condition", condition);
+  formData.append("industry", industry);
+  formData.append("compensation", compensation);
+  
   try {
-    const response = await fetch("/", {
+    const response = await fetch(`/post-ads/${category}/${subcategory}`, {
       method: "POST",
       body: formData,
-    });
-
+    })
     if (response.ok) {
-      const result = await response.json();
-      console.log("Photos uploaded successfully!", result);
+      const server_response = await response.json();
+      if (server_response.success) {
+        // Redirect the user manually to the new location
+        window.location.href = '/donate';
+      }
+      console.log("Photos uploaded successfully!");
     } else {
       console.log("Failed to upload photos.", response.status);
     }

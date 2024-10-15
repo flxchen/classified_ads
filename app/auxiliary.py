@@ -73,7 +73,7 @@ def send_receipt(email,amount):
             subject="Payment Receipt",            
             recipients=[email]
         )
-        msg.body = f"Thank you for your payment ${amount}!. Your transaction was successful!\n\nmylisting16 management team"
+        msg.body = f"Thank you for your payment ${amount}! Your transaction was successful!\n\nmylisting16 management team"
         mail.send(msg)        
         return jsonify({'status': 'Receipt sent'}), 200
     except Exception as e:

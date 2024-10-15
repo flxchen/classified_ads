@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from datetime import datetime
 from flask_login import login_required, current_user
 from . import category, db
@@ -24,10 +24,8 @@ def post_ad(category,subcategory):
         address = request.form.get('address')
         zipCode = request.form.get('zip-code')
         body = request.form.get('body')
-        photos = request.files.getlist('photo')
-        phone = request.form.get('phone')
-        for photo in photos:
-            print(photo)
+        photos = request.files.getlist('uploaded_photo')
+        phone = request.form.get('phone')        
         if not address:
             address = None
         if not phone:
@@ -55,12 +53,12 @@ def post_ad(category,subcategory):
         price = request.form.get('price')
         if not price:
             price = None
-        mileage = request.form.get('mileage')
+        mileage = request.form.get('mileage')        
         if not mileage:
             mileage = None
-        brand = request.form.get('brand')
+        brand = request.form.get('brand')        
         if not brand:
-            brand = None
+            brand = None        
         make = request.form.get('make')
         if not make:
             make = None
@@ -108,9 +106,9 @@ def post_ad(category,subcategory):
             db.session.commit()
             ad_id=jobAd.id
         
-        createPhoto(photos,ad_id)
-        flash('post ad successfully!','success')
-        return redirect(url_for('aux.payment'))
+        createPhoto(photos,ad_id)        
+        flash('post ad successfully!','success')        
+        return jsonify({'success': True})
     return response
 
 from flask import send_from_directory
@@ -135,6 +133,3 @@ def createPhoto(photos,ad_id):
                     new_photo = Photo(filename = filename,ad_id=ad_id)
                     db.session.add(new_photo)
                     db.session.commit()
-
-def photos_dict_to_list(photos_dict):
-    return list(photos_dict.values())

@@ -44,17 +44,15 @@ def log_in():
             login_user(existing_user)
             flash('Login successful!', 'success')
             return redirect(url_for('auth.home'))
+        elif not existing_user:
+            flash('account does not exit, please create an account first','danger')
         else:
             flash('Login unsuccessful. Please check email and password.', 'danger')
     return voidCache(render_template("log-in.html"))
 
 from . import category
-@auth.route("/",methods=['GET','POST'])
+@auth.route("/")
 def home():
-    if request.method == 'POST':
-        photos = request.files.getlist('photo')
-        for photo in photos:
-            print(photo)
     return voidCache(render_template("index.html",categories=category.categories,current_user=current_user))
 
 #prevent browser caching login required page

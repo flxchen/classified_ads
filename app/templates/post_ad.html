@@ -26,7 +26,7 @@
     novalidate
     id="form"
     enctype="multipart/form-data"
-    action="{{url_for('auth.home')}}"
+    action="{{url_for('postAd.post_ad',category=category,subcategory=subcategory)}}"
   >
     <h3 align="center">Post a new topic</h3>
     <div class="mb-3">
@@ -62,7 +62,7 @@
         <label for="state"><b>State</b></label>
         <input
           class="form-control"
-          id="city"
+          id="state"
           type="text"
           name="state"
           pattern=".*\S+.*"
