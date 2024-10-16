@@ -1,6 +1,5 @@
 from flask import Blueprint,render_template, request, flash, redirect, url_for, make_response
 from flask_login import login_user, current_user, login_required, logout_user
-from flask_dance.contrib.facebook import make_facebook_blueprint, facebook
 from . import db
 from .model import *
 
@@ -97,34 +96,3 @@ def reset_password():
             flash('User account does not exist. Please check your email.', 'danger')
 
     return render_template('forget-password.html')
-
-facebook_bp = make_facebook_blueprint(
-    client_id = '874238507715111',
-    client_secret = '3f631f69cb6d72cd2f1241017f9c31a8',
-    redirect_to = 'facebook_login',
-    scope=['email']
-)
-
-@facebook_bp.route('/facebook/login')
-def facebook_login():    
-    if not facebook.authorized:        
-        return redirect(url_for('facebook.login')) 
-    resp = facebook.get('/me?fields=id,name,email')    
-    if resp.ok:
-        user_info = resp.json()
-        email = user_info['email']        
-
-        # Check if user already exists
-        user = User.query.filter_by(email=email).first()
-        if not user:
-            # Create a new user if not exists
-            user = User(email=email)
-            db.session.add(user)
-            db.session.commit()
-
-        login_user(user)
-        flash('Login successful!', 'success')
-        return redirect(url_for('auth.home'))
-    else:
-        flash('Failed to fetch user information from Facebook.', 'danger')
-        return redirect(url_for('auth.log_in'))

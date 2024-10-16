@@ -15,7 +15,7 @@ def create_app():
     app = Flask(__name__)
     #load configuration files
     app.config.from_object(Config)    
-    db.init_app(app)    
+    db.init_app(app)
     migrate.init_app(app, db)
     mail.init_app(app)
     #create database models
@@ -23,7 +23,8 @@ def create_app():
     with app.app_context():
         db.create_all()      
     #register blueprint
-    from .auth import auth,facebook_bp
+    from .auth import auth
+    from .social_log_in import facebook_bp
     from .view import view
     from .postAd import postAd
     from .account import account_bp

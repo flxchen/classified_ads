@@ -1,6 +1,9 @@
 /.vscode
 /__pycache__
 /myenv
-/sample
+/venv-py10
+/app/__pycache__
+/app/uploads
+/app/database.py
 /migrations
 /.env
