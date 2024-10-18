@@ -14,14 +14,14 @@ mail = Mail()
 def create_app():
     app = Flask(__name__)
     #load configuration files
-    app.config.from_object(Config)    
+    app.config.from_object(Config)
     db.init_app(app)
     migrate.init_app(app, db)
     mail.init_app(app)
     #create database models
     from .model import User
     with app.app_context():
-        db.create_all()      
+        db.create_all()
     #register blueprint
     from .auth import auth
     from .social_log_in import facebook_bp
@@ -30,7 +30,7 @@ def create_app():
     from .account import account_bp
     from .auxiliary import aux
     app.register_blueprint(auth)
-    app.register_blueprint(facebook_bp) 
+    app.register_blueprint(facebook_bp)
     app.register_blueprint(view)
     app.register_blueprint(account_bp)
     app.register_blueprint(postAd)

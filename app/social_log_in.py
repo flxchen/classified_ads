@@ -8,19 +8,23 @@ from . import db
 facebook_bp = make_facebook_blueprint(
     client_id = Config.FACEBOOK_CLIENT_ID,
     client_secret = Config.FACEBOOK_CLIENT_SECRET,
-    redirect_to = 'facebook_login',
+    login_url='/facebook/login',
+    redirect_to = 'facebook.facebook_login',
     scope=['email']
 )
 
-@facebook_bp.route('/facebook/login')
+@facebook_bp.route('/post_login')
 def facebook_login():    
     if not facebook.authorized:        
-        return redirect(url_for('facebook.login')) 
-    resp = facebook.get('/me?fields=id,name,email')    
+        return redirect(url_for('facebook.login'))
+
+    resp = facebook.get('/me?fields=id,name,email')
     if resp.ok:
         user_info = resp.json()
-        email = user_info['email']        
-
+        email = user_info['email']
+        if not email:
+            flash('Email not found in Facebook response.', 'danger')
+            return redirect(url_for('auth.log_in'))
         # Check if user already exists
         user = User.query.filter_by(email=email).first()
         if not user:

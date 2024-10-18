@@ -96,3 +96,7 @@ def reset_password():
             flash('User account does not exist. Please check your email.', 'danger')
 
     return render_template('forget-password.html')
+
+@auth.route('/privacy')
+def privacy():
+    return render_template('privacy.html')

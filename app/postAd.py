@@ -112,23 +112,23 @@ def post_ad(category,subcategory):
     return response
 
 from flask import send_from_directory
-@postAd.route('/app/uploads/<filename>')
-def uploaded_file(filename):
+from os import path, makedirs
+from config import Config
+@postAd.route('/uploads/<filename>')
+def uploaded_file(filename):    
     return send_from_directory(Config.UPLOAD_FOLDER,filename)
 
-from os import path, makedirs, getcwd
-from config import Config
+
 #create folder to store user uploaded photos
-def createPhoto(photos,ad_id):
-    uploads_folder = path.join(getcwd(),'app',Config.UPLOAD_FOLDER)
-    if not path.exists(uploads_folder):
-        makedirs(uploads_folder)
+def createPhoto(photos,ad_id):    
+    if not path.exists(Config.UPLOAD_FOLDER):
+        makedirs(Config.UPLOAD_FOLDER,exist_ok=True)
     if photos:
         for photo in photos:
             filename = photo.filename
             if photo and filename:
                     # Save the file to the upload folder
-                    photo_url = path.join(uploads_folder, photo.filename)                    
+                    photo_url = path.join(Config.UPLOAD_FOLDER, photo.filename)
                     photo.save(photo_url)
                     new_photo = Photo(filename = filename,ad_id=ad_id)
                     db.session.add(new_photo)

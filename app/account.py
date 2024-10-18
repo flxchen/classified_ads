@@ -115,14 +115,14 @@ def filterMyAd(ads,sort,search,category,subcategory):
         (ad.Ad_type == 'For Sale' and ad.condition and lower_case_term in ad.condition) or (ad.Ad_type == 'Job' and ad.industry and lower_case_term in ad.industry.lower()))]
     return ads
 
-from os import path, remove, getcwd
+from os import path, remove
 from config import Config
 def deletePhoto(userId):
     ads = Ad.query.filter_by(user_id=userId).all()
     for ad in ads:
         photos = ad.photos
         for photo in photos:
-            photo_path = path.join(getcwd(), 'app', Config.UPLOAD_FOLDER, photo.filename)
+            photo_path = path.join(Config.UPLOAD_FOLDER, photo.filename)
             if path.exists(photo_path):
                 remove(photo_path)  # Remove the photo file from the filesystem
             db.session.delete(photo)            
@@ -131,7 +131,7 @@ def deletePhoto(userId):
 def deleteAdPhoto(photos):
     if photos:
         for photo in photos:
-            photo_path = path.join(getcwd(), 'app', Config.UPLOAD_FOLDER, photo.filename)
+            photo_path = path.join(Config.UPLOAD_FOLDER, photo.filename)
             if path.exists(photo_path):
                 remove(photo_path)
             db.session.delete(photo)            

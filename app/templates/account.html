@@ -11,7 +11,7 @@
       <a class="nav-link active" data-section="account-settings" href="#">
         Settings
       </a>
-    </li>    
+    </li>
     <li class="nav-item">
       <a class="nav-link" data-section="my-posts" href="#"> My Posts </a>
     </li>
@@ -35,7 +35,10 @@
             Email
           </button>
         </li>
-        <li class="nav-item" role="presentation">
+        <li
+          class="nav-item {% if not current_user.password_hash %}hidden{% endif %}"
+          role="presentation"
+        >
           <button
             class="nav-link"
             id="password-tab"
@@ -160,7 +163,9 @@
       </div>
     </section>
     <section id="my-posts" class="mt-4">
-      <a class="btn btn-info" href="{{url_for('account_bp.showPost')}}">show Ads</a>       
+      <a class="btn btn-info" href="{{url_for('account_bp.showPost')}}"
+        >show Ads</a
+      >
     </section>
   </main>
 </div>
