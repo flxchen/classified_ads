@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://mylisting16.pythonanywhere.com/sitemap.xml

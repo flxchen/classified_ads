@@ -3,12 +3,12 @@ from flask_mail import Message
 import stripe.error
 from config import Config
 from . import mail
-import json
-import os
 import stripe
 
 aux = Blueprint('aux',__name__)
-
+# This module defines routes for an auxiliary Flask application, handling about, contact, and donation functionalities. 
+# The 'about' route renders an about page, the 'contact' route manages contact form submissions and sends emails, 
+# and the 'donate' route processes payments via Stripe, sends receipts, and handles errors.
 @aux.route("/about")
 def about():
     return render_template("about.html")
@@ -67,8 +67,7 @@ def payment():
 
 @aux.route('/send-receipt', methods=['POST'])
 def send_receipt(email,amount):    
-    try:
-        # Send a confirmation email using Flask-Mail
+    try:        
         msg = Message(
             subject="Payment Receipt",            
             recipients=[email]
@@ -79,3 +78,10 @@ def send_receipt(email,amount):
     except Exception as e:
         print(f"email error: {e}")
         return jsonify({'error': str(e)}), 400
+    
+from flask import send_from_directory
+from os import path
+@aux.route('/robots.txt')
+def robots_txt():
+    cur_path = path.dirname(path.abspath(__file__))
+    return send_from_directory(cur_path, 'robots.txt')

@@ -77,7 +77,7 @@ def reset_password():
 
     if request.method == 'POST':
         email = request.form.get('email')
-        password = request.form.get('password')
+        password = request.form.get('new_password')
         
         # Check if the email exists in the database
         user = User.query.filter_by(email=email).first()

@@ -6,7 +6,7 @@ view = Blueprint('view',__name__)
 
 @view.route("/view/<category>", methods=['GET', 'POST'])
 @view.route("/view/<category>/<subcategory>", methods=['GET', 'POST'])
-def view_category(category, subcategory=None):    
+def view_category(category, subcategory=None):
     categorySize = len(Ad.query.filter(Ad.Ad_type == category).all()) 
     if request.method == 'POST':
         keyword = request.form.get('search')

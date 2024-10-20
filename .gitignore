@@ -6,4 +6,4 @@
 /app/uploads
 /app/database.py
 /migrations
-/app/uploads
+/uploads
